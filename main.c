@@ -20,8 +20,13 @@ double potential(double x){
     return Q*F*x;
 }
 
-void Normalise(gsl_vector *Single_eigvector_ptr, FILE *fp_2)
+void Normalise(gsl_vector *Single_eigvector_ptr, FILE *fp_2, int N)
 {
+    FILE *fp;
+    char fname[50];
+    sprintf(fname, "eigenvectors_%d.xyz", N);
+    fp=fopen(fname, "w+");
+    // fp=fopen("eigenvalues.txt", "w+");
     int n;
     double temp;
     double norm_factor, vector_sum=0;
@@ -33,7 +38,7 @@ void Normalise(gsl_vector *Single_eigvector_ptr, FILE *fp_2)
     for (n=0; n<DIM; n++){
         temp = (gsl_vector_get(Single_eigvector_ptr, n))/norm_factor;
         gsl_vector_set(Single_eigvector_ptr, n, temp);
-        fprintf(fp_2, "%g, %E\n", dx*n, gsl_vector_get(Single_eigvector_ptr, n)*dx);
+        fprintf(fp, "%g, %E\n", dx*n, gsl_vector_get(Single_eigvector_ptr, n)*dx);
         /*output mth value of nth eigenvector*/
     }
 }
@@ -124,7 +129,7 @@ gsl_vector *s_eigvector_ptr, gsl_vector *Potential_ptr, gsl_matrix *Norm_Eigvect
     for (n = 0; n < N; n++){  /*retrieve eigenvectors for confined states only*/
         gsl_matrix_get_col(s_eigvector_ptr, Eigvector_ptr, n);
         /*retrieve nth eigenvector*/
-        Normalise(s_eigvector_ptr, fp_2);
+        Normalise(s_eigvector_ptr, fp_2, n);
         /*normalise eigenvector*/
         gsl_matrix_set_col(Norm_Eigvector_ptr, n, s_eigvector_ptr);
     }
