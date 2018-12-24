@@ -37,4 +37,15 @@ if you got above error message, you could link another library to your applicati
 gcc -L/usr/local/Cellar/gsl/2.5/lib a.out -lgslcblas -lgsl -o output.out
 ```
 
+As for output, you can use gnuplot like below,
+```
+gnuplot> set y2tics
+gnuplot> plot "eigenvectors_0.xyz" u 1:2 axis x1y1 lt 1
+gnuplot> replot "eigenvectors_1.xyz" u 1:2 axis x1y1 with lp lt 2
+gnuplot> replot "eigenvectors_2.xyz" u 1:2 axis x1y1 with lp lt 3
+gnuplot> replot "eigenvectors_3.xyz" u 1:2 axis x1y1 with lp lt 4
+gnuplot> replot "eigenvectors_0.xyz" u 1:3 axis x1y2 with lp lt -1
+```
+![2018-12-24 21 46 49](https://user-images.githubusercontent.com/27273842/50399811-7e465100-07c5-11e9-85af-27acc44a905e.png)
+
 Finally you can enjoy GSL!

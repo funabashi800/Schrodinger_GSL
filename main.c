@@ -6,7 +6,7 @@
 #include <gsl/gsl_linalg.h>
 
 const double Q=1.60217733e-19;
-const double F=5.0e-2;
+const double F=1.0e-3;
 const double M=9.1093897e-31;
 const double T=300.0;
 const double D=1e+16;
@@ -32,13 +32,13 @@ void Normalise(gsl_vector *Single_eigvector_ptr, FILE *fp_2, int N)
     double norm_factor, vector_sum=0;
     for (n=0; n<DIM; n++){
         temp = gsl_vector_get(Single_eigvector_ptr, n);
-        vector_sum = vector_sum + temp*temp*dx;
+        vector_sum = vector_sum + (temp*temp*dx);
     }
     norm_factor = sqrt(vector_sum);
     for (n=0; n<DIM; n++){
         temp = (gsl_vector_get(Single_eigvector_ptr, n))/norm_factor;
         gsl_vector_set(Single_eigvector_ptr, n, temp);
-        fprintf(fp, "%g, %E\n", dx*n, gsl_vector_get(Single_eigvector_ptr, n)*dx);
+        fprintf(fp, "%g, %E, %g\n", dx*n, gsl_vector_get(Single_eigvector_ptr, n), potential(dx*n));
         /*output mth value of nth eigenvector*/
     }
 }
